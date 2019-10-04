@@ -3,18 +3,18 @@ import * as moment from "moment";
 import "moment/locale/pt";
 
 const patientiesState = [
-  { key: "F", title: "Fever" },
-  { key: "H", title: "Healthy" },
-  { key: "D", title: "Diabetes" },
-  { key: "T", title: "Tuberculosis" },
-  { key: "X", title: "Dead" }
+  { key: "f", title: "Fever" },
+  { key: "h", title: "Healthy" },
+  { key: "d", title: "Diabetes" },
+  { key: "t", title: "Tuberculosis" },
+  { key: "x", title: "Dead" }
 ];
 
 const drugs = [
-  { key: "As", title: "Aspirin" },
-  { key: "An", title: "Antibiotic" },
-  { key: "I", title: "Insulin" },
-  { key: "P", title: "Paracetamol" }
+  { key: "as", title: "Aspirin" },
+  { key: "an", title: "Antibiotic" },
+  { key: "i", title: "Insulin" },
+  { key: "p", title: "Paracetamol" }
 ];
 
 /*######### Rules ################
@@ -43,16 +43,14 @@ const handleStatePatienties = () => {
   }
   //Verify code insert in the field
   if (verifyField(codeStates, patientiesState)) {
-    codeDrugs.length === codeStates.length
-      ? compare(codeStates, codeDrugs)
-      : compare2(codeStates, codeDrugs);
+    handleDrugs(codeStates, codeDrugs);
   }
 };
 
 const verifyField = (codes, arrayTable) => {
   let verify = true;
   codes.map(code => {
-    if (arrayTable.findIndex(obj => obj.key === code.toUpperCase()) === -1) {
+    if (arrayTable.findIndex(obj => obj.key === code) === -1) {
       console.log(
         "Estado de paciente inserido inexistente/inválido. Introduza um código válido para continuar."
       );
@@ -62,89 +60,97 @@ const verifyField = (codes, arrayTable) => {
   return verify;
 };
 
-const compare = (patienties, addDrugs) => {
-  //console.clear();
+const handleDrugs = (patienties, addDrugs) => {
   patienties.map((patient, index) => {
-    // console.log(patienties[index]);
-    //console.log(addDrugs[index]);
-    switch (patient) {
-      case "f":
-        if (addDrugs[index] === "as" || addDrugs[index] === "p") {
-          console.log(`Paciente ${++index} com febre currado.`);
-        }
-        if (addDrugs[index] === "") {
-          console.log(
-            `Nenhum medicamento inserido. O paciente continuará doente.`
-          );
-        }
-        break;
-      case "t":
-        if (addDrugs[index] === "an") {
-          console.log(`Paciente ${++index} com febre currado.`);
-        }
-        break;
-      case "d":
-        if (addDrugs[index] === "i")
-          console.log(
-            `Paciente ${++index} com diabetes, estabilizado com insulina.`
-          );
-        if (addDrugs[index] !== "i")
-          console.log(`Paciente ${++index} com diabetes, morre sem insulina.`);
-        break;
-      default:
-        console.log(
-          `Este medicamento não é adequado para o estado deste paciente.`
-        );
-        break;
-    }
-  });
-};
+    //console.log(addDrugs);
+    let verifyDrugs,
+      tableDrugs = "";
+    let drugsX = [];
+    // Search by name the table codes.
+    addDrugs.map(code => {
+      tableDrugs = drugs.findIndex(obj => obj.key === code);
+      verifyDrugs = tableDrugs !== -1 ? drugs[tableDrugs].title : null;
+      drugsX.push(verifyDrugs);
+    });
 
-const compare2 = (patienties, addDrugs) => {
-  // console.clear();
-  //console.log(patienties);
-  //console.log(addDrugs);
+    drugsX = drugsX.join("/");
+    console.log(drugsX);
 
-  patienties.map((patient, index) => {
     switch (patient) {
-      case "f":
-      case "d":
-      case "t":
+      case "h":
+        console.log(drugs[tableDrugs].key);
+        console.log(addDrugs);
+        if (!verifyDrugs) {
+          console.log(`Medicamento inexistente ou inválido.`);
+        }
         if (addDrugs.indexOf("as") !== -1 && addDrugs.indexOf("p") !== -1) {
           console.log(
-            `O paciente poderá chegar a óbito com a junção destes dois medicamento`
+            `O paciente ${++index} poderá levar a óbito com a junção destes medicamento.`
           );
-        } else {
-          switch (true) {
-            case addDrugs.indexOf("as") !== -1:
-            case addDrugs.indexOf("p") !== -1:
-              console.log("Currado");
-              break;
-            default:
-              console.log(`Sem efeitos colaterais conhecidos.`);
-              break;
+        }
+        if (addDrugs.indexOf("an") !== -1 && addDrugs.indexOf("i") !== -1) {
+          if (addDrugs.indexOf("p") !== -1 || addDrugs.indexOf("as") !== -1) {
+            console.log(
+              `O paciente ${++index} poderá ficar saudável devido o (P/As) tirar a febre causada pela junção destes dois medicamento(An/I).`
+            );
+          } else {
+            console.log(
+              `O paciente ${++index} poderá ficar com febre com a junção destes dois medicamento(An/I).`
+            );
           }
         }
+
         break;
-      case "h":
-        if (addDrugs.indexOf("i") !== -1 && addDrugs.indexOf("an") !== -1) {
+      case "f":
+        if (addDrugs.indexOf("as") !== -1 && addDrugs.indexOf("p") !== -1) {
           console.log(
-            `O paciente poderá obter febre com a junção destes dois medicamento`
+            `O paciente ${++index} poderá chegar a óbito com a junção destes dois medicamento.`
+          );
+        }
+        if (addDrugs.indexOf("as") !== -1 || addDrugs.indexOf("p") !== -1) {
+          console.log(
+            `O paciente ${++index} será currado da Febre com a aplicação medicamento ${drugsX}.`
+          );
+        }
+        break;
+      case "d":
+        console.log(addDrugs.indexOf("i"));
+        if (addDrugs.indexOf("i") === -1) {
+          console.log(
+            `O paciente ${++index} poderá chegar a óbito sem a aplicação de insulina.`
           );
         }
         if (addDrugs.indexOf("as") !== -1 && addDrugs.indexOf("p") !== -1) {
           console.log(
-            `O paciente poderá chegar a óbito com a junção destes dois medicamento`
+            `O paciente ${++index} poderá chegar a óbito com a junção destes dois medicamento.`
+          );
+        }
+        if (addDrugs.indexOf("i") !== -1) {
+          console.log(
+            `O paciente ${++index} será estabilizado com a aplicação dos medicamentos.`
           );
         }
         break;
-      case "x":
-        console.log(
-          `Paciente em estado de óbito. Só um milagre resuscitar-lo com este medicamento`
-        );
+      case "t":
+        if (addDrugs.indexOf("as") !== -1 && addDrugs.indexOf("p") !== -1) {
+          console.log(
+            `O paciente ${++index} poderá chegar a óbito com a junção destes dois medicamento.`
+          );
+        }
+        if (addDrugs.indexOf("an") !== -1 && addDrugs.indexOf("i") !== -1) {
+          console.log(
+            `O paciente ${++index} poderá chegar a óbito com a junção destes dois medicamento.`
+          );
+        } else if (addDrugs.indexOf("an") !== -1) {
+          console.log(
+            `O paciente ${++index} será currado da tuberculose com a aplicação dos medicamentos.`
+          );
+        }
         break;
       default:
-        console.log(`Sem efeitos colaterais conhecidos.`);
+        console.log(
+          `Tratamento desconhecido ou sem efeitos colaterais para o paciente ${++index}.`
+        );
         break;
     }
   });
