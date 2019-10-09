@@ -1,11 +1,12 @@
 const INITIAL_STATE = {
   messages: [],
+  flyings: [],
   reports: [
     { id: 'f', value: 0 },
     { id: 'h', value: 0 },
     { id: 'd', value: 0 },
     { id: 't', value: 0 },
-    { id: 'x', value: 0 },
+    { id: 'x', value: 1 },
   ],
   patientsState: [
     { key: 'f', title: 'Fever' },
@@ -109,8 +110,7 @@ return messages; */
   }
   console.log(messages, random.length); */
 let random = [];
-let message = [];
-const listAll = [];
+let listAll = [];
 let listRepet = [];
 // Function para zerar o contatdor do musquito mostro
 const resetCount = () => {
@@ -125,30 +125,30 @@ const resetCount = () => {
 const toggleReport = (state, patient) => {
   const newState = { ...state };
   let indexPatient = null;
+  let indexDead = null;
   state.patientsState.map((element, index) => {
     if (element.title === patient) {
       indexPatient = index;
     }
   });
-
-  if (patient === 'Dead') {
-    if (newState.reports[indexPatient].value === 0) {
-      newState.reports = [
-        newState.reports[indexPatient],
-        {
-          value: --state.reports[indexPatient].value,
-        },
-      ];
+  // busca index morto na tabela
+  state.patientsState.map((element, index) => {
+    if (element.title === 'Dead') {
+      indexDead = index;
     }
-    this.patient = 'Healthy';
+  });
 
-    state.patientsState.map((element, index) => {
-      if (element.title === patient) {
-        indexPatient = index;
-      }
-    });
+  // decrementa de morto
+  if (newState.reports[indexDead].value > 0) {
+    newState.reports = [
+      newState.reports[indexDead],
+      {
+        value: --state.reports[indexDead].value,
+      },
+    ];
   }
 
+  // add em saudável
   newState.reports = [
     newState.reports[indexPatient],
     {
@@ -159,57 +159,104 @@ const toggleReport = (state, patient) => {
 };
 
 const handleList = state => {
+  // busca número na lista original
+  // retira o numero sorteado do array 1
+
+  // sorteia um número de 1 a 100 - ok
+  /** Verifica se foi digitado algum estado de paciente que não existe na lista */
+  // coloca o numero sorteado no array 2
+  // verificar o número sorteado é o da sorte
+  const message = [];
   // Obtem valor array de numeros já sorteados do localStorage
   random = JSON.parse(localStorage['@hospiral-simulator/random']);
   const min = Math.ceil(1);
-  const max = Math.floor(100);
-  const num = Math.floor(Math.random() * (max - min + 1)) + min;
+  const max = Math.floor(3);
+  const num = 2; // Math.floor(Math.random() * (max - min + 1)) + min;
 
-  // sorteia um número de 1 a 100 - ok
-  const temp = Math.floor(Math.random() * (max - min + 1)) + min;
-  console.log(num, temp);
-
+  // Recriar lista
   const createNewList = () => {
+    listAll = [];
     for (let i = 1; i <= max; i++) {
       listAll.push(i);
+      listAll.sort((a, b) => a - b);
     }
   };
 
   if (listAll.length === 0) createNewList();
 
-  // retira o numero sorteado do array 1
-  const index = listAll.indexOf(num);
-  console.log(index);
+  // Gera número aleatório
+  let temp = Math.floor(Math.random() * (max - min + 1)) + min;
 
-  if (index > -1) {
+  // add na lista de repetidos
+  const addListRepet = index => {
     listAll.splice(index, 1);
-    listRepet.push(num);
-    console.log(listAll);
-    console.log(listRepet);
+    listRepet.push(temp);
+    listRepet.sort((a, b) => a - b);
+    const tryRest = max - listAll.length;
+    return tryRest;
+  };
+
+  // Enquanto não sortear um número não repetido não para
+  while (listAll.indexOf(temp) === -1) {
+    temp = Math.floor(Math.random() * (max - min + 1)) + min;
+    // console.log('Novo sorteio', temp);
   }
-  // coloca o numero sorteado no array 2
-  // verificar o número sorteado é o da sorte
+
+  // console.log('Número que saiu Temp', temp);
+  // console.log('Index Temp', listAll.indexOf(temp));
+  // console.log('Número saiu Num', num);
+  // console.log('Index Num', listAll.indexOf(num));
+
+  // Caso seja o número da sorte verifica morto se tiver ressucita
   if (temp === num) {
-    message = `o mosquino voador mostrou a sua força. Ressucitou uma pessoa em estado de óbito`;
-    createNewList();
-    const newState = 'Healthy';
-    toggleReport(state, newState);
-    return;
+    // Caso tenha algum em estado de óbito - Ressucita
+    // Busca index de Dead na tabela
+    let indexDead = null;
+    state.patientsState.map((element, index) => {
+      if (element.title === 'Dead') {
+        indexDead = index;
+      }
+    });
+
+    if (state.reports[indexDead].value > 0) {
+      message.push(
+        `O mosquito voador mostrou a sua força. Ressucitou uma pessoa em estado de óbito`
+      );
+      createNewList();
+      const newState = 'Healthy';
+      toggleReport(state, newState);
+    } else {
+      createNewList();
+      message.push(
+        'O mosquito com poder de ressucitar apareceu, porém não tem ninguém em óbito'
+      );
+    }
   }
+
+  // Caso não for da sorte add a lista de repetidos
+  if (listAll.indexOf(temp) > -1) {
+    addListRepet(listAll.indexOf(temp));
+
+    // console.log('Lista geral', listAll);
+    // console.log('Lista já sairam', listRepet);
+  }
+
+  // [Segurança] Caso não encontre número da sorte entre o min e max zera tudo
   if (listRepet.length === max) {
     createNewList();
-    const newState = 'Healthy';
-    toggleReport(state, newState);
+    // const newState = 'Healthy';
+    // toggleReport(state, newState);
     listRepet = [];
   }
-  console.log(listRepet.length);
+
+  return message;
 };
 
 const handleDrugs = (state, action) => {
   const messages = [];
   action.codeStates.map((patient, index) => {
     const patientCurrent = index + 1;
-    /** Verifica se foi digitado algum estado de paciente que não existe na lista */
+
     function searchPatient(element) {
       let result = false;
       state.patientsState.map(code => {
@@ -439,8 +486,7 @@ export default function simulator(state = INITIAL_STATE, action) {
     case 'TOGGLE_REPORT':
       return toggleReport(state, action);
     case 'TOGGLE_FLYING':
-      handleList(state);
-      break;
+      return { ...state, flyings: handleList(state) };
     default:
       return state;
   }

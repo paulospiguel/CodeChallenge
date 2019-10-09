@@ -13,7 +13,7 @@ import Counter from '../../components/Counter';
 export default function Dashboard() {
   // const [dead, setDead] = useState(0);
 
-  const { drugs, patientsState, messages } = useSelector(
+  const { drugs, patientsState, messages, flyings } = useSelector(
     state => state.toggleSimulator
   );
 
@@ -148,6 +148,9 @@ export default function Dashboard() {
         <div>
           <ul>
             {messages.map(message => (
+              <li key={message}>{message}</li>
+            ))}
+            {flyings.map(message => (
               <li key={message}>{message}</li>
             ))}
           </ul>
