@@ -1,21 +1,10 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Container = styled.div`
-  background: #e1e1e1;
-  margin: 20px;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  .fieldInput {
-    display: flex;
-    flex-direction: column;
-
-    div {
-      display: inherit;
-      flex-direction: inherit;
-    }
-  }
+  justify-content: space-between;
 `;
 
 export default Container;
