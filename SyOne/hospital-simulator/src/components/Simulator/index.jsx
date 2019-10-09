@@ -1,12 +1,10 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { openAlert } from 'simple-react-alert';
 import {
   faHandPointRight,
   faBullhorn,
 } from '@fortawesome/free-solid-svg-icons';
-
-import * as moment from 'moment';
-import 'moment/locale/pt';
 
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -22,10 +20,9 @@ import {
 import TableRules from '../TableRules';
 import ReportPatients from '../ReportPatients';
 import Counter from '../Counter';
+import MomentTime from '../MomentTime';
 
 export default function Dashboard() {
-  // const [dead, setDead] = useState(0);s
-
   const { drugs, patientsState, messages, flyings } = useSelector(
     state => state.toggleSimulator
   );
@@ -76,7 +73,7 @@ export default function Dashboard() {
   };
 
   /** Busca nomes dos medicamentos na tabela * */
-  const handleKeyDrugs = obj => {
+  /*   const handleKeyDrugs = obj => {
     const findByField = field => (value, list) =>
       list.find(obj => obj[field] === value);
 
@@ -87,9 +84,9 @@ export default function Dashboard() {
     const newObj = findByKey(obj).in(drugs);
     console.log(newObj.title);
   };
-
+ */
   /** Verifica campos paciente/medicamento » Caso foi digitado em brando retorna erro */
-  const verifyField = (codes, arrayTable) => {
+  /*   const verifyField = (codes, arrayTable) => {
     let verify = true;
     codes.map(code => {
       if (arrayTable.findIndex(obj => obj.key === code) === -1) {
@@ -100,7 +97,7 @@ export default function Dashboard() {
       }
     });
     return verify;
-  };
+  }; */
 
   /** Retira espaços field medicamentos */
   const handleFild = e => {
@@ -125,8 +122,10 @@ export default function Dashboard() {
           <div>
             <h1>Hospital Simulator</h1>
             <p>
-              Simulador de administração de medicamentos para estados de
-              pacientes
+              <i>
+                Simulador de administração de medicamentos para estados de
+                pacientes
+              </i>
             </p>
           </div>
         </HeaderName>
@@ -138,14 +137,6 @@ export default function Dashboard() {
       <DivSimulator>
         <DivList>
           <List>
-            <h4>Medicamentos</h4>
-            <div>
-              {drugs.map(drug => (
-                <li key={drug.key}>{`${drug.key} = ${drug.title}`}</li>
-              ))}
-            </div>
-          </List>
-          <List>
             <h4>Estado dos Pacientes</h4>
             <div>
               {patientsState.map(state => (
@@ -155,12 +146,20 @@ export default function Dashboard() {
               ))}
             </div>
           </List>
+          <List>
+            <h4>Medicamentos</h4>
+            <div>
+              {drugs.map(drug => (
+                <li key={drug.key}>{`${drug.key} = ${drug.title}`}</li>
+              ))}
+            </div>
+          </List>
         </DivList>
         <div className="divForm">
           <DivInput>
             <div>
               <label htmlFor="fieldState">
-                Inserir código do estado do paciente(s):{' '}
+                Código do estado do(s) paciente(s):{' '}
               </label>
               <input
                 id="fieldState"
@@ -170,9 +169,7 @@ export default function Dashboard() {
               />
             </div>
             <div>
-              <label htmlFor="fieldDrugs">
-                Inserir código do(s) medicamento(s):{' '}
-              </label>
+              <label htmlFor="fieldDrugs">Código do(s) medicamento(s): </label>
               <input id="fieldDrugs" type="text" onChange={handleFild} />
             </div>
           </DivInput>
@@ -198,16 +195,10 @@ export default function Dashboard() {
                 </li>
               ))}
             </ul>
-            {messages.map(message => {
-              alert(message);
-            })}
+            {messages.map(message => alert(message))}
           </div>
           <ReportPatients />
-          <p className="dateTime">
-            {moment()
-              .locale('pt')
-              .format('LLLL')}
-          </p>
+          <MomentTime />
         </DivReport>
       </DivSimulator>
     </Container>

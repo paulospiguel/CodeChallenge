@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  @media only screen and (max-width: 360px) {
+    header {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -16,7 +22,7 @@ export const Container = styled.div`
     color: green;
     align-items: center;
     justify-content: space-between;
-    margin: 0 0 10px;
+    margin: 0 0 10px 0;
     padding: 20px 10px;
 
     svg {
@@ -45,7 +51,7 @@ export const Container = styled.div`
     border-radius: 5px;
     color: #fff;
     font-size: 1.6em;
-    width: 300px;
+    width: 100%;
   }
 `;
 
@@ -55,61 +61,76 @@ export const DivSimulator = styled.div`
   display: flex;
   flex-direction: column;
   background: #fff;
-  margin: 0 0 10px;
-  padding: 20px 10px;
+  padding: 0 10px;
   color: #000;
+  font-family: 'Source Sans Pro', sans-serif;
 `;
 
 export const DivList = styled.div`
+  @media only screen and (max-width: 680px) {
+    flex-direction: column;
+  }
   display: flex;
   flex: 1;
 `;
 export const List = styled.ul`
   list-style: none;
   width: 100%;
-  margin: 10px 5px;
+  margin: 5px;
   background: #dcdcdc;
   padding: 10px 20px;
   border-radius: 4px;
-  > div {
+
+  div {
     background: #fff;
     height: 80%;
     flex: 1;
-    margin: 10px;
-    padding: 5px;
-  }
-  > li {
-    padding: 2px;
-    flex: 1;
-    text-align: justify;
-    justify-items: center;
+    margin: 0 10px 10px 10px;
+    padding: 5px 10px;
+
+    > li {
+      padding: 5px 10px;
+      flex: 1;
+      text-align: justify;
+      justify-items: center;
+    }
   }
   > h4 {
     background: #7159c1;
     text-align: center;
     border-radius: 4px;
     color: #fff;
+    padding: 5px 0;
   }
 `;
 
 export const DivInput = styled.div`
+  @media only screen and (max-width: 680px) {
+    flex-direction: column;
+  }
   display: flex;
   width: 100%;
-
-  padding: 10px;
+  padding: 20px 10px;
   margin-bottom: 10px;
   flex-direction: row;
-
   align-items: flex-start;
   background: #dcdcdc;
-  label {
-  }
-  input {
-    flex: 1;
-    border-radius: 4px;
-    margin: 5px 0;
+
+  div {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    height: 30px;
+
+    label {
+      text-align: center;
+    }
+    input {
+      border-radius: 4px;
+      margin: 5px;
+      height: 30px;
+      font-size: 1em;
+      text-align: center;
+    }
   }
 `;
 
@@ -128,9 +149,6 @@ export const DivReport = styled.div`
     ul {
       list-style: none;
       padding: 10px;
-      ul {
-        list-style-image: url('sqpurple.gif');
-      }
     }
 
     svg {
@@ -138,14 +156,5 @@ export const DivReport = styled.div`
       color: grey;
       margin-right: 5px;
     }
-  }
-  .dateTime {
-    text-align: center;
-    background: #fff;
-    padding: 5px;
-    margin: 10px 0;
-    border-radius: 4px;
-    font-weight: bold;
-    color: #7159c1;
   }
 `;

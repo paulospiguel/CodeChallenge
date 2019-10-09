@@ -6,7 +6,7 @@ const INITIAL_STATE = {
     { id: 'h', value: 0 },
     { id: 'd', value: 0 },
     { id: 't', value: 0 },
-    { id: 'x', value: 1 },
+    { id: 'x', value: 0 },
   ],
   patientsState: [
     { key: 'f', title: 'Fever' },
@@ -72,48 +72,8 @@ if (random.length === max) {
 }
 return messages; */
 
-// Obtem um número aleatório entre max e min
-
-// Verifica a picada do mosquito min/max, adiciona em um array de numeros repetidos.
-// Loop até encontrar um número não repetido, quando encontra add no array e o loop.
-// *
-//    ===== Início =========
-// cria uma array vazio - ok
-// cria array de 1 a 100 - ok
-
-//   -Se for
-//         -mersagem de sortudo
-//         -zera array 2
-//         -restitui arra1
-//   - Se não for
-//         -mensagem de tente novamaente
-//         -sair
-
-// verificar a quantidade de número no array 2
-//     - se for menos Igual a 100
-//         -zera array 2
-//         -restitui arra1
-//     =========  FIM ========
-
-/* if (result) {
-    random.push(temp);
-    random.sort((a, b) => a - b);
-    const JSONReadyRandom = JSON.stringify(random);
-    localStorage.setItem('@hospiral-simulator/random', JSONReadyRandom);
-    if (temp === numLuck) {
-      messages = `O número da sorte foi${temp}`;
-    } else {
-      const rest = max - random.length;
-      messages = `Não foi desta vez. Restão ${rest} tenativas`;
-    }
-    if (random.length >= max) resetCount();
-  }
-  console.log(messages, random.length); */
-let random = [];
-let listAll = [];
-let listRepet = [];
 // Function para zerar o contatdor do musquito mostro
-const resetCount = () => {
+/* const resetCount = () => {
   localStorage.removeItem('@hospiral-simulator/random');
   const JSONReadyRandom = JSON.stringify([]);
   localStorage.setItem('@hospiral-simulator/random', JSONReadyRandom);
@@ -121,7 +81,11 @@ const resetCount = () => {
   // console.log(randomCount, `${randomCount.length} itens`);
   return randomCount;
 };
+ */
 
+const random = [];
+let listAll = [];
+let listRepet = [];
 const toggleReport = (state, patient) => {
   const newState = { ...state };
   let indexPatient = null;
@@ -159,32 +123,26 @@ const toggleReport = (state, patient) => {
 };
 
 const handleList = state => {
-  // busca número na lista original
-  // retira o numero sorteado do array 1
-
-  // sorteia um número de 1 a 100 - ok
-  /** Verifica se foi digitado algum estado de paciente que não existe na lista */
-  // coloca o numero sorteado no array 2
-  // verificar o número sorteado é o da sorte
   const message = [];
   // Obtem valor array de numeros já sorteados do localStorage
-  random = JSON.parse(localStorage['@hospiral-simulator/random']);
+  // random = JSON.parse(localStorage['@hospiral-simulator/random']);
   const min = Math.ceil(1);
-  const max = Math.floor(3);
-  const num = 2; // Math.floor(Math.random() * (max - min + 1)) + min;
+  const max = Math.floor(1000000);
+  const num = localStorage.getItem('@hospiral-simulator/count'); // Math.floor(Math.random() * (max - min + 1)) + min;
 
   // Recriar lista
   const createNewList = () => {
     listAll = [];
     for (let i = 1; i <= max; i++) {
       listAll.push(i);
-      listAll.sort((a, b) => a - b);
+      // listAll.sort((a, b) => a - b);
     }
   };
 
+  // Cria novo array para min a max
   if (listAll.length === 0) createNewList();
 
-  // Gera número aleatório
+  // Obtem um número aleatório entre max e min
   let temp = Math.floor(Math.random() * (max - min + 1)) + min;
 
   // add na lista de repetidos
@@ -196,6 +154,8 @@ const handleList = state => {
     return tryRest;
   };
 
+  // Verifica a picada do mosquito min/max, adiciona em um array de numeros repetidos.
+  // Loop até encontrar um número não repetido, quando encontra add no array e o loop.
   // Enquanto não sortear um número não repetido não para
   while (listAll.indexOf(temp) === -1) {
     temp = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -239,6 +199,10 @@ const handleList = state => {
 
     // console.log('Lista geral', listAll);
     // console.log('Lista já sairam', listRepet);
+  }
+
+  if (localStorage.getItem("@hospiral-simulator/count'") >= max) {
+    localStorage.removeItem('@hospiral-simulator/count');
   }
 
   // [Segurança] Caso não encontre número da sorte entre o min e max zera tudo

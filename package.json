@@ -3,6 +3,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-brands-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@fortawesome/react-fontawesome": "^0.1.5"
+    "@fortawesome/react-fontawesome": "^0.1.5",
+    "react-alert": "^5.5.0",
+    "react-alert-template-basic": "^1.0.0"
   }
 }

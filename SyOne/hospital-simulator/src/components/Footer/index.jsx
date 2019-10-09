@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <Container>
       <div>
-        <p>PauloSpiguel Desevoper</p>
+        <p>PauloSpiguel Developer</p>
         <p>Coding Challenge</p>
         <p>V. 1.0 | 2019</p>
       </div>

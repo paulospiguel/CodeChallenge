@@ -8,9 +8,8 @@ export const Container = styled.div`
   display: inherit;
   flex-direction: inherit;
   align-items: inherit;
-
   background: grey;
-  margin: 10px 20px;
+  margin: 0 10px 10px 10px;
   padding: 10px 20px;
 
   p {

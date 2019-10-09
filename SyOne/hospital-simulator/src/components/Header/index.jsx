@@ -7,11 +7,11 @@ import Container from './styles';
 export default function Header() {
   return (
     <Container>
-      <h1>Simulador</h1>
-      <div>
+      <div className="logoIcon">
+        <h1>Simulador</h1>
         <FontAwesomeIcon icon={faHospitalSymbol} />
+        <h1>Hospital</h1>
       </div>
-      <h1>Hospital</h1>
     </Container>
   );
 }

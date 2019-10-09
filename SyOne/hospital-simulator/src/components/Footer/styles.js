@@ -1,6 +1,16 @@
 import styled from 'styled-components';
 
 const Container = styled.footer`
+  @media only screen and (max-width: 360px) {
+    flex-direction: column;
+    height: 100%;
+    p {
+      text-align: center;
+    }
+    img {
+      margin-top: 10px;
+    }
+  }
   background: #333;
   height: 100px;
   display: flex;

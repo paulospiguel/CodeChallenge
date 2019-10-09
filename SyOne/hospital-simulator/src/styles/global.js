@@ -15,11 +15,13 @@ body{
   color: #fff;
   font-family: "Source Sans Pro",sans-serif;
   text-rendering: optimizeLegibility !important;
-  -webkit-font-smoothing: antialiased !important
+  -webkit-font-smoothing: antialiased !important;
+
+
 }
 
 html, body, #root{
-  height: 100%
+  height: 100vh;
 }
 
 input, button {
