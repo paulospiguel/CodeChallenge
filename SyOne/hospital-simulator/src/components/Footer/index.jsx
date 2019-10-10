@@ -9,7 +9,7 @@ export default function Footer() {
       <div>
         <p>PauloSpiguel Developer</p>
         <p>Coding Challenge</p>
-        <p>V. 1.0 | 2019</p>
+        <p>V. 1.2 | 2019</p>
       </div>
       <img src={logo} alt="logo-syone" />
     </Container>
