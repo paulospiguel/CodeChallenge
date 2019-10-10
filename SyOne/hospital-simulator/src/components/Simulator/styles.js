@@ -139,6 +139,7 @@ export const DivReport = styled.div`
   padding: 10px 20px;
   margin-top: 10px;
   border-radius: 4px;
+  margin-bottom: 20px;
   h3 {
     color: #7159c1;
   }

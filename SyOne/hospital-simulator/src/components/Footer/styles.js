@@ -26,7 +26,7 @@ const Container = styled.footer`
       font-family: 'Source Sans Pro', sans-serif;
       color: #dedede;
       font-size: 16px;
-      font-size-adjust: 0.58;
+      margin: 0;
       color: #7159c1;
     }
   }
